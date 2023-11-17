@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'userapp',
     'infoapp',
+    'dashapp',
     'rest_framework'
 ]
 
@@ -65,6 +66,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'dashapp.logo_processors.logo_context',
             ],
         },
     },
@@ -124,6 +126,9 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -132,9 +137,32 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
   
-# This is required for CustomUser 
-AUTH_USER_MODEL = 'auth.User'
+EMAIL_HOST_PASSWORD = 'dzkaxrblycvbdtfg'   
+# Step 1: https://myaccount.google.com/
+# Step 2: From Security section turn on 2 step verification
+# Step 3: Search with " App Passwords "
+# Step 4 : Create App selete others and generate token
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.googlemail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'mdsamrat25800@gmail.com'
+EMAIL_HOST_PASSWORD = 'dzkaxrblycvbdtfg'   
+DEFAULT_FROM_EMAIL = 'mdsamrat25800@gmail.com'
+PASSWORD_RESET_TIMEOUT = 14400  # Seconds 
+
+
+AUTH_USER_MODEL = 'userapp.AppUser'
+# AUTH_USER_MODEL = 'auth.user'
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
+    'userapp.auth_backends.EmailBackend',
 ]
+
+
+
+
+PASSWORD_RESET_TIMEOUT = 60 * 60

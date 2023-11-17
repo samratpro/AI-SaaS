@@ -14,7 +14,7 @@
       <div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
           <a href="{% url "dashboard" %}" class="text-nowrap logo-img">
-            <img src="{% static "images/logos/dark-logo.svg" %}" width="180" alt="" />
+            <img src="{{logos.logo_img.url}}" width="180" alt="" />
           </a>
           <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
             <i class="ti ti-x fs-8"></i>
@@ -35,6 +35,14 @@
                   <i class="ti ti-layout-dashboard"></i>
                 </span>
                 <span class="hide-menu">Dashboard</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="{% url "website_list" %}" aria-expanded="false">
+                <span>
+                  <i class="ti  ti-world"></i>
+                </span>
+                <span class="hide-menu">Websites</span>
               </a>
             </li>
             <li class="nav-small-cap ms-0 ps-0">
@@ -166,6 +174,126 @@
         {% block dashcontent %}
         
 
+                          <!-- Content Row -->
+                          <div class="row">
+                            <!-- Total Article  Card Example -->
+                            <div class="col-xl-3 col-md-6 mt-4 ms-4">
+                                <div class="card border-left-info shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+        
+                                            <div class="col mr-2">
+                                                <div class="text-sm font-weight-bold text-dark text-uppercase mb-1">
+                                                    Bulk Posted
+                                                </div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{count_bulkpost}}</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <!-- Total Website Card Example -->
+                            <div class="col-xl-3 col-md-6 mt-4 ms-4">
+                                <div class="card border-left-info shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-sm font-weight-bold text-dark text-uppercase mb-1">
+                                                    Single Posted
+                                                </div>
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col-auto">
+                                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                                                            {{count_singlepost}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <!-- Total Website Card Example -->
+                            <div class="col-xl-3 col-md-6 mt-4 ms-4">
+                                <div class="card border-left-info shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-sm font-weight-bold text-dark text-uppercase mb-1">
+                                                    Website List
+                                                </div>
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col-auto">
+                                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                                                            {{count_website}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+        
+        
+                        <!-- Content Row -->
+                        <div class="row">
+                            <!-- Total Article  Card Example -->
+                            <div class="col-xl-3 col-md-6 mt-4 ms-4">
+                                <div class="card border-left-info shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+        
+                                            <div class="col mr-2">
+                                                <div class="text-sm font-weight-bold text-dark text-uppercase mb-1">
+                                                    OpenAI API
+                                                </div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{count_openai}}</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <!-- Total Website Card Example -->
+                            <div class="col-xl-3 col-md-6 mt-4 ms-4">
+                                <div class="card border-left-info shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-sm font-weight-bold text-dark text-uppercase mb-1">
+                                                    YouTube API
+                                                </div>
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col-auto">
+                                                        <div class="h5 mb-0 mr-3 text-dark font-weight-bold">
+                                                            {{count_youtube}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
 
         {% endblock dashcontent %}

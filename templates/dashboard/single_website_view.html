@@ -1,0 +1,18 @@
+{% extends 'dashboard/dashboard.html' %}
+{% load static %}
+{% block dashcontent %}
+
+
+<div class="container ps-5">
+  <!-- Hover added -->
+  <div class="list-group">
+    <span class="border rounded p-2 m-1"> Website Name : {{sigle_website_data.website_name}}</span>
+    <span class="border rounded p-2 m-1"> Website Url : {{sigle_website_data.website_url}}</span>
+    <span class="border rounded p-2 m-1"> Username : {{sigle_website_data.username}}</span>
+    <span class="border rounded p-2 m-1"> App Pass : {{sigle_website_data.app_pass}}</span>
+  </div>
+  <a class="btn btn-success m-1 mt-2" href="{% url 'update_website' sigle_website_data.id %}" role="button">Edit Website</a>
+
+</div>
+
+{% endblock dashcontent %}
