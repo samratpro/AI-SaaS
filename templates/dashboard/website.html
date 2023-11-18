@@ -4,43 +4,43 @@
         
 <div class="container ps-5">
 
-    <form action="" method="post" class="w-50">
+    <form action="" method="post" class="w-90">
         {% csrf_token %}
-        <div class="form-group">
+        <div class="form-group mb-2">
             <div class="col-6">
                 <label class="mb-1">Website Name</label>
                 <input name="website_name" type="text" class="form-control" required>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group mb-2">
             <div class="col-6">
                 <label class="mb-1">Website URL</label>
                 <input name="website_url" type="text" class="form-control" required>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group mb-2">
             <div class="col-6">
                 <label class="mb-1">Username</label>
                 <input name="username" type="text" class="form-control" required>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group mb-2">
             <div class="col-6">
                 <label class="mb-1">Application Password</label>
                 <input name="app_pass" type="text" class="form-control" required>
             </div>
         </div>
-        <div class="form-group">
-            <input class="btn btn-success" type="submit" value="Save">
+        <div class="form-group mt-3">
+            <input class="btn brand-bg text-white border-0" type="submit" value="Save">
         </div>
     </form>
     
 </div>
 <div class="container mt-5 ps-5">
-    <ul class="list-group">
-        <li class="list-group-item bg-secondary text-white">Website Lists</li>
+    <ul class="list-group website-view">
+        <li class="list-group-item brand-bg text-white">Website Lists</li>
         {% for website in website_data  %}
-            <li class="list-group-item">{{website.website_name}} <a class="btn btn-warning m-1" href="{% url 'single_website_view' website.id %}"> Views </a> <a class="btn btn-success m-1" href="{% url 'update_website' website.id %}">Update</a><a class="btn btn-danger m-1" href="{% url 'delete_website' website.id %}">Delete</a></li>
+            <li class="list-group-item" style="border-top:1px solid #F2F2F2!important;" ><span class="me-5">{{website.website_name}}</span><a class="btn btn-warning m-1" href="{% url 'single_website_view' website.id %}"> <i class="ti ti-eye"></i> </a> <a class="btn m-1 brand-bg" href="{% url 'update_website' website.id %}"><i class="ti ti-pencil"></i></a><a class="btn btn-danger m-1" href="{% url 'delete_website' website.id %}"><i class="ti ti-trash"></i></a></li>
         {% endfor %}
     </ul>
 </div>

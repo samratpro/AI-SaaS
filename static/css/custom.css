@@ -6,7 +6,7 @@
 }
 
 .submenu{
-    background-color:#EEF3FF!important;
+    background-color:#F8F9FA!important;
     margin-top:-2px!important;
 }
 .submenu li a{
@@ -17,4 +17,82 @@
 
 .app-header{
     border-bottom: 1px solid rgb(229,234,239) !important;
+}
+
+.brand-bg{
+    background-color: #47BAB7!important;
+    color:white!important;
+}
+.active{
+    background-color: #47BAB7!important;
+
+}
+.website-view{
+    box-shadow: 0 0 3px 0 #A9A9A9;
+    border-radius: 0!important;
+}
+.website-view li{
+    border:0px!important;
+}
+
+
+/* Dashboard */
+.row-col {
+    display: flex;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.card-col {
+    flex: 0 0 auto;
+    width: 32.3333333333%;
+    margin-right: 20px;
+}
+
+.card-inner {
+    position: relative;
+    padding: 20px;
+    display: flex;
+    justify-content: stretch;
+    align-items: center;
+    border-radius: 6px;
+    box-shadow: rgb(0 0 0 / 4%) 0 3px 5px;
+    overflow: hidden;
+    z-index: 0;
+    color: #0d1218;
+    border:1px solid #EEEEEE!important;
+    background-color: white!important;
+}
+.card-icon {
+    width: 90px;
+    height: 90px;
+    color: #44aba8!important;
+    border:1px solid #44aba8;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, .12);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-inline-end: 25px;
+}
+p.card-number {
+    font-size: 35px;
+    font-weight: 500;
+    margin: 0;
+}
+p.card-title {
+    margin: 0;
+}
+.card-title {
+    margin-bottom: .5rem;
+}
+
+.tools .card-icon {
+    width: 50px;
+    height: 50px;
+}
+
+.card-icon svg {
+    height: 34px;
+    width: auto;
+    fill: #47BAB7;
 }
