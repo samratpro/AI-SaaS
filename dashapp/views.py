@@ -64,7 +64,7 @@ def delete_website(request, website_id):
 @login_required(login_url='login/')
 def dashboard(request):
     template = 'dashboard/dashboard.html'
-    count_website = Website_List.objects.count()
+    count_website = Website_List.objects.filter(user=request.user).count()
 
     context = {'count_website':count_website,}
     return render(request, template, context=context)

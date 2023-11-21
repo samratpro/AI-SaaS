@@ -6,7 +6,8 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    path('bulk-posting', views.bulk_posting, name='bulk_posting'),  
+    path('bulk-posting', views.bulk_posting, name='info_bulk_posting'),  
+    path('single-posting', views.single_posting, name='info_single_posting'),  
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

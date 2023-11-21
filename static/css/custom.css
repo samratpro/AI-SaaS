@@ -1,3 +1,5 @@
+
+
 .copyright{
     position: fixed!important;
 }
@@ -5,28 +7,11 @@
     margin: 0!important;
 }
 
-.submenu{
-    background-color:#F8F9FA!important;
-    margin-top:-2px!important;
-}
-.submenu li a{
-    margin-left: 10px!important;
-    color: rgb(49, 49, 49)!important;
-
-}
 
 .app-header{
     border-bottom: 1px solid rgb(229,234,239) !important;
 }
 
-.brand-bg{
-    background-color: #47BAB7!important;
-    color:white!important;
-}
-.active{
-    background-color: #47BAB7!important;
-
-}
 .website-view{
     box-shadow: 0 0 3px 0 #A9A9A9;
     border-radius: 0!important;
@@ -95,4 +80,48 @@ p.card-title {
     height: 34px;
     width: auto;
     fill: #47BAB7;
+}
+
+
+
+.submenu{
+    background-color:#F8F9FA!important;
+    margin-left: 10px;
+
+    line-height: auto!important;
+    border-radius: 10px;
+}
+.submenu li{
+    border-radius: 10px;
+
+    margin-top: 2px;
+}
+
+.submenu li a{
+    color: rgb(49, 49, 49);
+
+}
+
+.brand-bg{
+    background-color: #47BAB7!important;
+    color:white!important;
+}
+.active{
+    background-color: #47BAB7!important;
+    color: white!important;
+
+}
+.text-primary{
+    color: #47BAB7!important;
+}
+
+.bg-primary{
+    background-color: #47BAB7!important;
+
+}
+
+
+/* Info App */
+.form-control, .form-select{
+    border:1px solid #bdbdbd!important;
 }
