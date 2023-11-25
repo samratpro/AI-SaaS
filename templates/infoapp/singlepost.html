@@ -17,12 +17,11 @@
                     <label for="" class="form-label fs-4 fw-normal">Keyword</label>
                     <div class="col-8">
                         <div class="mb-3">
-                            <input type="text"
-                              name="keyword" class="form-control" name="keyword" id="">
+                            <input type="text" name="keyword" class="form-control" id="keywordInput">
                           </div> 
                     </div>
                     <div class="col-4">
-                        <a name="title" value ="" class="btn btn-primary" href="#" role="button">Generate Title</a>
+                        <button class="btn btn-primary" id="generateTitleButton">Generate Title</button>
                     </div>
                 </div>
         
@@ -30,12 +29,11 @@
                     <label for="" class="form-label fs-4 fw-normal">Title</label>
                     <div class="col-8">
                         <div class="mb-3">
-                            <input type="text"
-                              class="form-control" name="keyword" id="">
+                            <input type="text" class="form-control" name="titleinput" id="titleInput">
                           </div> 
                     </div>
                     <div class="col-4">
-                        <a name="title" value ="" class="btn btn-primary" href="#" role="button">Generate Outline</a>
+                        <button class="btn btn-primary" id="generateoutlineButton">Generate Outline</button>
                     </div>
                 </div>
 
@@ -43,7 +41,7 @@
                     <div class="col-11">
                         <label for="" class="form-label fs-4 fw-normal">Outline</label>
                         <div class="form-floating">
-                            <textarea name="outline" class="form-control" id="floatingTextarea2" style="height: 200px"></textarea>
+                            <textarea name="outline" class="form-control" id="outlineinput" style="height: 200px"></textarea>
                         </div>
                     </div>
                 </div>
@@ -103,6 +101,63 @@
         {% endfor %}
     </ul>
 </div>
+
+
+<script>
+    // For title
+    document.getElementById('generateTitleButton').addEventListener('click', async function(event) {
+        event.preventDefault();
+        const input_text = document.getElementById('keywordInput').value;
+    
+        const response = await fetch('/api/generate-text/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({ input_text : input_text })
+        });
+    
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+    
+        const data = await response.json();
+        document.getElementById('titleInput').value = data.generated_text;
+    });
+    
+
+    // For outline
+    document.getElementById('generateoutlineButton').addEventListener('click', async function(event) {
+        event.preventDefault();
+        const input_text = document.getElementById('titleInput').value;
+    
+        const response = await fetch('/api/generate-text/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({ input_text: input_text })
+        });
+    
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+    
+        const data = await response.json();
+        document.getElementById('outlineinput').value = data.generated_text;
+    });
+
+
+    
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+</script>
 
 {% endblock dashcontent %}
 

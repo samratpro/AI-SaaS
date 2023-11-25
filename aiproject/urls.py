@@ -23,5 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('userapp.urls')),
     path('infowriter/', include('infoapp.urls')),
-    path('', include('dashapp.urls'))
+    path('', include('dashapp.urls')),
+    path('api/', include('apiapp.urls')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
 ] 

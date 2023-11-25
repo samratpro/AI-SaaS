@@ -271,8 +271,7 @@ def SingleKeywordsJob(url, username, app_pass, openai_api, engine, youtube_api, 
             prompt_remember = heading
             if 'h3' in heading.lower():
                 print(heading.lower())
-                clean_heading = heading.replace('H3', '').replace('h3', '').replace(':', '').replace('-', '').replace(
-                    '/', '').replace('<', '').replace('>', '').strip()
+                clean_heading = heading.replace('H3', '').replace('h3', '').replace(':', '').replace('-', '').replace('/', '').replace('<', '').replace('>', '').strip()
                 print(f'Para Section H2 : {heading} .................')
                 body_img_src = body_img(clean_heading + ' ' + keyword, "")
                 section = text_render(

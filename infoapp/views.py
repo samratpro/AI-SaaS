@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from dashapp.models import *
 
 # Create your views here.
 
 
-scheduler_thread = None
+
+# scheduler_thread = None
 @login_required(login_url='login/')   
 def bulk_posting(request):
         template = 'infoapp/bulkposting.html'
@@ -66,7 +68,7 @@ def bulk_posting(request):
 
 
 
-scheduler_thread2 = None
+
 @login_required(login_url='login/')     
 def single_posting(request):
         # website = WesiteModel.objects.all()

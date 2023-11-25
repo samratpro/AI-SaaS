@@ -5,6 +5,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
+
+
 urlpatterns = [
     path('bulk-posting', views.bulk_posting, name='info_bulk_posting'),  
     path('single-posting', views.single_posting, name='info_single_posting'),  
