@@ -6,7 +6,7 @@ from .models import *
 
 
 
-
+'''Website'''
 @login_required(login_url='login/')
 def website(request):
 
@@ -57,6 +57,54 @@ def delete_website(request, website_id):
         website = Website_List.objects.get(pk=website_id, user=request.user)
         website.delete()
         return redirect('/website_list')
+
+
+
+
+''' Youtube API '''
+@login_required(login_url='login/')
+def youtubeapi(request):
+
+        youtubeapi_data = Youtube_api.objects.filter(user=request.user)
+
+        template = 'dashboard/youtubeapi.html'
+        if request.method == 'POST':
+            apiname = request.POST['apiname']
+            apikey = request.POST['apikey']
+            obj = Youtube_api(user=request.user, name=apiname, API_Key=apikey)
+            obj.save()
+            return redirect('/youtubeapi_list')
+                
+        else:
+            context = {'youtubeapi_data':youtubeapi_data}
+            return render(request, template, context=context)
+
+
+
+@login_required(login_url='login/') 
+def update_youtubeapi(request, youtubeapi_id):
+        template = "dashboard/update_youtubeapi.html"
+        youtubeapi =Youtube_api.objects.get(pk=youtubeapi_id, user=request.user)
+
+        if request.method == "POST":
+                youtubeapi.name = request.POST['apiname']
+                youtubeapi.API_Key = request.POST['apikey']
+                youtubeapi.save()
+                return redirect('/youtubeapi_list')
+        else:
+            context = {'existing_youtubeapi_data': youtubeapi,'youtubeapi_id': youtubeapi_id}
+        return render(request, template, context)
+
+
+@login_required(login_url='login/') 
+def delete_youtubeapi(request, youtubeapi_id):
+        youtubeapi = Youtube_api.objects.get(pk=youtubeapi_id, user=request.user)
+        youtubeapi.delete()
+        return redirect('/youtubeapi_list')
+
+
+
+
 
 
 

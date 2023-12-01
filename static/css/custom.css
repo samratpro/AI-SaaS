@@ -125,3 +125,9 @@ p.card-title {
 .form-control, .form-select{
     border:1px solid #bdbdbd!important;
 }
+#generateTitleButton{
+    transition: 0.5s!important;
+}
+#generateTitleButton:hover{
+    background-color: #399794!important;
+}

@@ -12,12 +12,12 @@
     <form action="" method="post">
         {% csrf_token %}
         <div class="row g-2">
-            <div class="col-md-8">
+            <div class="col-md-10">
                 <div class="row g-2">
                     <label for="" class="form-label fs-4 fw-normal">Keyword</label>
                     <div class="col-8">
                         <div class="mb-3">
-                            <input type="text" name="keyword" class="form-control" id="keywordInput">
+                            <input type="text" required name="keyword" class="form-control" id="keywordInput">
                           </div> 
                     </div>
                     <div class="col-4">
@@ -29,7 +29,7 @@
                     <label for="" class="form-label fs-4 fw-normal">Title</label>
                     <div class="col-8">
                         <div class="mb-3">
-                            <input type="text" class="form-control" name="titleinput" id="titleInput">
+                            <input type="text" required class="form-control" name="titleinput" id="titleInput">
                           </div> 
                     </div>
                     <div class="col-4">
@@ -38,16 +38,16 @@
                 </div>
 
                 <div class="row g-2">
-                    <div class="col-11">
+                    <div class="col-10">
                         <label for="" class="form-label fs-4 fw-normal">Outline</label>
                         <div class="form-floating">
-                            <textarea name="outline" class="form-control" id="outlineinput" style="height: 200px"></textarea>
+                            <textarea name="outline" required class="form-control" id="outlineinput" style="height: 200px"></textarea>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <!-- <div class="col-md-3">
                 <label class="form-label h5 mb-3">Options</label>
                 <select name="website_id" class="form-select" aria-label="Default select example">
                     <option value="0" selected>Select Website</option>
@@ -58,11 +58,8 @@
 
         
                 <select name="openaiapi_id" class="form-select mt-3" aria-label="Default select example">
-                    <option value="0" selected>Select AI Model</option>
-                    <option value="gpt-3">GPT-3</option>
-                    <option selected value="chatmodel">Chat GPT 3.5 +</option>
-                    <option value="chat4">Chat GPT 4</option>
-
+                    <option selected value="enable">Image Enable</option>
+                    <option value="disable">Image Disable</option>
                 </select>
         
                 <select name="youtubeapi_id" class="form-select mt-3" aria-label="Default select example">
@@ -81,7 +78,7 @@
                     <option value="publish">Publish</option>
                     <option value="draft">Draft</option>
                 </select>
-            </div>
+            </div> -->
         </div>
 
 
@@ -102,51 +99,77 @@
     </ul>
 </div>
 
+<div style="display: none;">
+ <p id="generateTitlecommand">{{prompts.generate_title}}</p>
+ <p id="generateoutlinecommand">{{prompts.generate_outline}}</p>
+</div>
+
 
 <script>
     // For title
     document.getElementById('generateTitleButton').addEventListener('click', async function(event) {
         event.preventDefault();
-        const input_text = document.getElementById('keywordInput').value;
-    
-        const response = await fetch('/api/generate-text/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken')
-            },
-            body: JSON.stringify({ input_text : input_text })
-        });
-    
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-    
-        const data = await response.json();
-        document.getElementById('titleInput').value = data.generated_text;
-    });
+        keyword = document.getElementById('keywordInput').value;
+        const input_text = document.getElementById('generateTitlecommand').textContent + keyword
+
+        if(keyword.length > 0){
+            document.getElementById('generateTitleButton').style.backgroundColor = '#44A6A3';
+            document.getElementById('generateTitleButton').style.borderColor = '#44A6A3';
+            document.getElementById('generateTitleButton').textContent = '......';
+
+            const response = await fetch('/api/generate-info-single-title/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({ input_text : input_text })
+            });
+        
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+        
+            const data = await response.json();
+            document.getElementById('titleInput').value = data.generated_text;
+            document.getElementById('generateTitleButton').style.backgroundColor = '#47BAB7';
+            document.getElementById('generateTitleButton').style.borderColor = '#47BAB7';
+            document.getElementById('generateTitleButton').textContent = 'Generate Title';
+
+       }
+    })
     
 
     // For outline
     document.getElementById('generateoutlineButton').addEventListener('click', async function(event) {
         event.preventDefault();
-        const input_text = document.getElementById('titleInput').value;
+        const title = document.getElementById('titleInput').value;
+        const input_text = document.getElementById('generateoutlinecommand').textContent + title
     
-        const response = await fetch('/api/generate-text/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken')
-            },
-            body: JSON.stringify({ input_text: input_text })
-        });
-    
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+        if(title.length > 0){
+            document.getElementById('generateoutlineButton').style.backgroundColor = '#44A6A3';
+            document.getElementById('generateoutlineButton').style.borderColor = '#44A6A3';
+            document.getElementById('generateoutlineButton').textContent = '.....';
+
+            const response = await fetch('/api/generate-info-single-outline/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({ input_text: input_text })
+            });
+        
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+        
+            const data = await response.json();
+            document.getElementById('outlineinput').value = data.generated_text;
+            document.getElementById('generateoutlineButton').style.backgroundColor = '#47BAB7';
+            document.getElementById('generateoutlineButton').style.borderColor = '#47BAB7';
+            document.getElementById('generateoutlineButton').textContent = 'Generate Outline';
         }
-    
-        const data = await response.json();
-        document.getElementById('outlineinput').value = data.generated_text;
     });
 
 

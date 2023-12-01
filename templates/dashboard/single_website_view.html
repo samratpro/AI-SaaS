@@ -6,11 +6,13 @@
 <div class="container ps-5">
   <!-- Hover added -->
   <div class="list-group w-90">
-    <span class="border-bottom pt-3 pt-3 pb-3 m-1 mb-2"> <span class="bg-success p-2 me-3 text-white rounded">Website Name : </span>   <span style="border-bottom:2px solid #13DEB9;">{{sigle_website_data.website_name}}</span>   </span>
-    <span class="border-bottom pt-3 pt-3 pb-3 m-1 mb-2"> <span class="bg-success p-2 me-3 text-white rounded">Website Url :</span>     <span style="border-bottom:2px solid #13DEB9;">{{sigle_website_data.website_url}}</span>  </span>
-    <span class="border-bottom pt-3 pt-3 pb-3 m-1 mb-2"> <span class="bg-success p-2 me-3 text-white rounded">Username : </span>       <span style="border-bottom:2px solid #13DEB9;">{{sigle_website_data.username}}</span>  </span>
-    <span class="border-bottom pt-3 pt-3 pb-3 m-1 mb-2"> <span class="bg-success p-2 me-3 text-white rounded">App Pass : </span>       <span style="border-bottom:2px solid #13DEB9;">{{sigle_website_data.application_password}}</span>  </span>
-  </div>
+    <ul>
+        <li class="rounded pt-3 pt-3 pb-3 m-1 mb-2" style="border:1px solid #e1e2e2;"> <span class="p-2 me-3 rounded">Website Name : </span>   <span>{{sigle_website_data.website_name}}</span>   </li>
+        <li class="rounded pt-3 pt-3 pb-3 m-1 mb-2" style="border:1px solid #e1e2e2;"> <span class="p-2 me-3 rounded">Website Url :</span>     <span>{{sigle_website_data.website_url}}</span>  </li>
+        <li class="rounded pt-3 pt-3 pb-3 m-1 mb-2" style="border:1px solid #e1e2e2;"> <span class="p-2 me-3 rounded">Username : </span>       <span>{{sigle_website_data.username}}</span>  </li>
+        <li class="rounded pt-3 pt-3 pb-3 m-1 mb-2" style="border:1px solid #e1e2e2;"> <span class="p-2 me-3 rounded">App Pass : </span>       <span>{{sigle_website_data.application_password}}</span>  </li>
+    </ul>
+    </div>
   <a class="btn btn-success m-1 mt-2 border-0" style="background-color:#47BAB7" href="{% url 'update_website' sigle_website_data.id %}" role="button">Edit Website</a>
 
 </div>

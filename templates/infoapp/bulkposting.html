@@ -30,11 +30,8 @@
 
         
                 <select name="openaiapi_id" class="form-select mt-3" aria-label="Default select example">
-                    <option value="0" selected>Select AI Model</option>
-                    <option value="gpt-3">GPT-3</option>
-                    <option selected value="chatmodel">Chat GPT 3.5 +</option>
-                    <option value="chat4">Chat GPT 4</option>
-
+                    <option selected value="enable">Image Enable</option>
+                    <option value="disable">Image Disable</option>
                 </select>
         
                 <select name="youtubeapi_id" class="form-select mt-3" aria-label="Default select example">
@@ -60,41 +57,60 @@
     </form>
 </div>
 
+
 <div class="container mt-5">
         <div class="row justify-content-center align-items-center g-2 mb-5">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <label class="form-label mb-1">Pending Keyword List</label>
                 <div class="mb-3">
                   <label for="" class="form-label"></label>
-                  <textarea class="form-control h-auto" name="" p readonly rows="3" style="background-color:#E9ECEF;height:200px"></textarea>
+<textarea class="form-control h-auto" name="" p readonly rows="3" style="background-color:#E9ECEF;height:200px">
+{% for keyword in keyword_pending  %}{{keyword.keyword_name}} , Status: {{keyword.status}}
+{% endfor %}
+</textarea>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <label class="form-label mb-1">Completed Keyword List</label>
                 <div class="mb-3">
                   <label for="" class="form-label"></label>
-                  <textarea class="form-control h-auto" name="" id="" readonly  rows="3" style="background-color:#E9ECEF;height:200px"></textarea>
+<textarea class="form-control h-auto" name="" id="" readonly  rows="3" style="background-color:#E9ECEF;height:200px">
+{% for keyword in keyword_completed  %}{{keyword.keyword_name}} , Status : {{keyword.status}}
+{% endfor %}
+</textarea>
                 </div>
-                
-            </div>
-            <div class="col-md-4">
-                <label class="form-label mb-1">Logs</label>
-                <div class="mb-3">
-                  <label for="" class="form-label"></label>
-                  <textarea class="form-control h-auto" name="" id="" readonly rows="3" style="background-color:#272727;height:200px"></textarea>
-                </div>
-                
             </div>
         </div>
-        <ul class="list-group">
-            {% for keyword in keyword_pending  %}
-            <li class="list-group-item">
-                {{keyword.name}} <span style="border-bottom:2px solid red;">Status</span> : {{keyword.status}}
-                <span class="border rounded ms-2 p-1 bg-warning">{{keyword.error}}</span> 
-                <a class="btn btn-danger ms-3 m-1" href="{% url 'delete_pending_bulk_post' keyword.id %}">Cancel</a>    
-            </li>
-            {% endfor %}
-        </ul>
+</div>
+
+
+<div class="container mt-5">
+    <div class="row justify-content-center align-items-center g-2 mb-5">
+
+        <div class="col-md-6">
+            <label class="form-label mb-1">Logs</label>
+            <div class="mb-3">
+              <label for="" class="form-label"></label>
+<textarea class="form-control h-auto" name="" id="" readonly rows="3" style="background-color:#272727;height:200px">
+{% for keyword in keyword_pending  %}{{keyword.error}}  
+{% endfor %}
+</textarea>
+            </div>
+            
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label mb-1">Failed Keyword List</label>
+            <div class="mb-3">
+              <label for="" class="form-label"></label>
+<textarea class="form-control h-auto" name="" p readonly rows="3" style="background-color:#E9ECEF;height:200px">
+{% for keyword in keyword_faild  %}{{keyword.keyword_name}} , Status : {{keyword.status}}
+{% endfor %}
+</textarea>
+            </div>
+        </div>
+
+    </div>
 </div>
 
 {% endblock dashcontent %}

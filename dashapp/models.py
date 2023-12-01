@@ -13,15 +13,15 @@ class Logo(models.Model):
 
 
 class ApiList(models.Model):
-    serial_number = models.AutoField(primary_key=True)  # Auto-incrementing serial number
+    api_name = models.CharField(max_length=100)
     api_key = models.CharField(max_length=300)
-    filled_quota = models.PositiveIntegerField(null=True, blank=True)
+    filled_quota = models.PositiveIntegerField(default=0)
     website_quota_limit = models.PositiveIntegerField()
     error_status = models.TextField(null=True, blank=True)
 
     def __str__(self):
-        return f"API number : {self.serial_number} , Working for : ( {self.filled_quota} ) operation of ( {self.website_quota_limit} ) Quota , API key : {self.api_key}"
-    
+        return f"{self.api_name} : Working for - ( {self.filled_quota} operation ) of ( {self.website_quota_limit}  Quota  ) , API key : {self.api_key}"
+
 
 class Website_List(models.Model):
     user = models.ForeignKey(AppUser, on_delete=models.CASCADE, null=True, blank=True)

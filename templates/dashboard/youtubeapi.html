@@ -1,0 +1,39 @@
+{% extends 'dashboard/dashboard.html' %}
+{% load static %}
+{% block dashcontent %}
+        
+<div class="container ps-5">
+
+    <form action="" method="post" class="w-90">
+        {% csrf_token %}
+        <div class="form-group mb-2">
+            <div class="col-6">
+                <label class="mb-1">API Name</label>
+                <input name="apiname" type="text" class="form-control" required placeholder="api one">
+            </div>
+        </div>
+        <div class="form-group mb-2">
+            <div class="col-6">
+                <label class="mb-1">API Key</label>
+                <input name="apikey" type="text" class="form-control" required placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+            </div>
+        </div>
+        <div class="form-group mt-3">
+            <input class="btn brand-bg text-white border-0" type="submit" value="Save">
+        </div>
+    </form>
+    
+</div>
+<div class="container mt-5 ps-5">
+    <ul class="list-group website-view">
+        <li class="list-group-item brand-bg text-white">Youtube API Lists</li>
+        {% for youtubeapi in youtubeapi_data  %}
+            <li class="list-group-item" style="border-top:1px solid #F2F2F2!important;" >api name : <span class="me-5">{{youtubeapi.name}} <a class="btn m-1 brand-bg" href="{% url 'update_youtubeapi' youtubeapi.id %}"><i class="ti ti-pencil"></i></a><a class="btn btn-danger m-1" href="{% url 'delete_youtubeapi' youtubeapi.id %}"><i class="ti ti-trash"></i></a></li>
+        {% endfor %}
+    </ul>
+</div>
+
+
+{% endblock dashcontent %}
+
+
