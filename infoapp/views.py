@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 scheduler_thread = None
 @login_required(login_url='login/')   
 def bulk_posting(request):
-        template = 'infoapp/bulkposting.html'
+        template = 'infoapp/bulk/posting.html'
         curent_user = request.user
         website = Website_List.objects.filter(user=curent_user)
         youtubeapi = Youtube_api.objects.filter(user=curent_user)
@@ -78,12 +78,12 @@ def bulk_posting(request):
 def completed_info_bulk_post(request):
     BulkKeyword = info_bulk_model.objects.filter(status='Completed').order_by('name')
     context = {'BulkKeyword':BulkKeyword}
-    template = 'infoapp/complete_bulk_post.html'
+    template = 'infoapp/bulk/completed_posts.html'
     return render(request, template, context=context)
 
 @login_required(login_url='login/')
-def completed_info_bulk_post_view(request, post_id):
-    templeate = 'infoapp/bulk_post_view.html'
+def completed_info_bulk_single_view(request, post_id):
+    templeate = 'infoapp/bulk/completed_single_view.html'
     bulk_post = info_bulk_model.objects.get(pk=post_id)
     context = {'bulk_post':bulk_post}
     return render(request, templeate, context=context)
@@ -92,13 +92,13 @@ def completed_info_bulk_post_view(request, post_id):
 def delete_completed_info_bulk_post(request, post_id):
         api = info_bulk_model.objects.get(pk=post_id)
         api.delete()
-        return redirect('/completed-info-bulk-post')
+        return redirect('/completed-bulk-posts')
 
 @login_required(login_url='login/')    
 def failed_info_bulk_post(request):
         BulkKeyword = info_bulk_model.objects.filter(status='Failed').order_by('name')
         context = {'BulkKeyword':BulkKeyword}
-        template = 'infoapp/failed_bulk_post.html'
+        template = 'infoapp/bulk/failed_posts.html'
         return render(request, template, context=context)
 
 @login_required(login_url='login/') 
@@ -106,7 +106,7 @@ def delete_failed_info_bulk_post(request, post_id):
         api = info_bulk_model.objects.get(pk=post_id)
         print(api)
         api.delete()
-        return redirect('/failed-info-bulk-post')
+        return redirect('/failed-bulk-posts')
 
 
 
@@ -120,7 +120,7 @@ def single_posting(request):
         youtubeapi = Youtube_api.objects.filter(user=request.user)
         prompts = Info_Manual_Command.objects.first()
         context = {'website':website, 'youtubeapi':youtubeapi, 'prompts':prompts}
-        template = 'infoapp/singlepost.html'
+        template = 'infoapp/manual/posting_front.html'
         # if request.method == 'POST':
         #     try:
         #         keyword = request.POST['keyword']
