@@ -12,7 +12,9 @@ urlpatterns = [
     path('completed-bulk-posts', views.completed_info_bulk_post, name='completed_info_bulk_post'), 
     path('completed-bulk-single-view/<post_id>', views.completed_info_bulk_single_view, name='completed_info_bulk_single_view'), 
     path('delete-completed-bulk-post/<post_id>', views.delete_completed_info_bulk_post, name='delete_completed_info_bulk_post'),  
+    path('delete-pending-bulk-info-post/<post_id>', views.delete_pending_bulk_info_post, name='delete_pending_bulk_info_post'),  
     path('failed-bulk-posts', views.failed_info_bulk_post, name='failed_info_bulk_post'), 
+    path('failed-bulk-single-view/<post_id>', views.failed_info_bulk_single_view, name='failed_info_bulk_single_view'), 
     path('delete-failed-bulk-post/<post_id>', views.delete_failed_info_bulk_post, name='delete_failed_info_bulk_post'),
 
 

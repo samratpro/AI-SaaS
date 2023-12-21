@@ -74,6 +74,22 @@
                   </a>
                 </li>
                 <li class="sidebar-item"> 
+                  <a class="sidebar-link ms-3" href="#"> 
+                    <span>
+                      <i class="ti ti-align-center"></i>
+                    </span>
+                    <span>Completed</span> 
+                  </a>
+                </li>
+                <li class="sidebar-item"> 
+                  <a class="sidebar-link ms-3" href="#"> 
+                    <span>
+                      <i class="ti ti-minus"></i>
+                    </span>
+                    <span>Failed</span> 
+                  </a>
+                </li>
+                <li class="sidebar-item"> 
                   <a class="sidebar-link" href="{% url "info_bulk_posting" %}"> 
                     <span>
                       <i class="ti ti-reload"></i>
@@ -81,6 +97,23 @@
                     <span>Bulk Posting</span> 
                   </a>
                 </li>
+                <li class="sidebar-item"> 
+                  <a class="sidebar-link ms-3" href="{% url "completed_info_bulk_post" %}"> 
+                    <span>
+                      <i class="ti ti-align-center"></i>
+                    </span>
+                    <span>Completed</span> 
+                  </a>
+                </li>
+                <li class="sidebar-item"> 
+                  <a class="sidebar-link ms-3" href="{% url "failed_info_bulk_post" %}"> 
+                    <span>
+                      <i class="ti ti-minus"></i>
+                    </span>
+                    <span>Failed</span> 
+                  </a>
+                </li>
+                
               </ul>
             </li>
            

@@ -131,3 +131,18 @@ p.card-title {
 #generateTitleButton:hover{
     background-color: #399794!important;
 }
+
+
+
+
+body{
+    background-color: #F4F9FE !important;
+}
+
+
+/* Centering the table contents */
+.table-container {
+    text-align: center;
+}
+
+

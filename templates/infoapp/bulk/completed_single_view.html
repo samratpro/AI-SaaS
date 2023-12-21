@@ -1,0 +1,23 @@
+{% extends 'dashboard/dashboard.html' %}
+{% load static %}
+{% block dashcontent %}
+
+<script src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+<script src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+
+
+<div class="container mt-5">
+ 
+    <h2> Keyword: {{completed_info_bulk_post.keyword_name}} </h2>
+
+    <div class="border p-2 mt-3 mb-2" style="border-color: #DEE2E7 !important;">Post Status: {{completed_info_bulk_post.status}}</div>
+    <div class="border p-2 mt-3 mb-3" style="border-color: #DEE2E7 !important;">Post Status: {{completed_info_bulk_post.error}}</div>
+    <textarea name="content" id="id_content">{{ completed_info_bulk_post.content }}</textarea>
+    <script>
+        // Initialize the CKEditor instance
+        CKEDITOR.replace('id_content');
+    </script>
+
+</div>
+
+{% endblock dashcontent %}

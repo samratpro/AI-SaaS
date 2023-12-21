@@ -1,17 +1,35 @@
 {% extends 'dashboard/dashboard.html' %}
 {% load static %}
 {% block dashcontent %}
+
         
-<div class="container mt-5">
-    <ul class="list-group">
-        {% for bulk in BulkKeyword  %}
-        <li class="list-group-item p-3 border-left">
-            {{bulk.name}},  <span class="ms-3 border rounded p-1 bg-light"> Status : {{bulk.status}}</span> <span class="ms-2 border rounded p-1 bg-light"> {{bulk.error}} </span>
-            <a class="btn btn-danger ms-3 m-1" href="{% url 'delete_completed_info_bulk_post' bulk.id %}">Delete</a>    
-            <a class="btn btn-warning ms-3 m-1" href="{% url 'completed_info_bulk_single_view' bulk.id %}">View</a>    
-        </li>
-        {% endfor %}
-    </ul>
+<div class="container">
+    <div class="brand-bg rounded mb-5 mt-3">
+        <h1 class="h4 py-3 mt-1 mb-0 ms-3 text-white"> Completed Info Bulk Posts</h1>
+    </div>
+        <table class="table table-striped table-bordered" style="border-color: #DEE2E7;">
+            <thead>
+                <tr>
+                    <th class="count-column" style="width: 40px;">Count</th>
+                    <th>Keyword Name</th>
+                    <th style="width: 100px;">View</th>
+                    <th style="width: 100px;">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for completed in BulkKeyword %}
+                    <tr>
+                        <td class="p-0 px-3" style="width: 40px;">{{ forloop.counter }}</td>
+                        <td class="p-0 px-2">{{ completed.keyword_name }}</td>
+                        <td class="p-0 px-3 py-1" style="width: 100px;"><a href="{% url 'completed_info_bulk_single_view' completed.id %}" class="btn btn-primary p-1 px-2"> <i class="ti ti-eye"></i> </a></td>
+                        <td class="p-0 px-3 py-1" style="width: 100px;"><a href="{% url 'delete_completed_info_bulk_post' completed.id %}" class="btn btn-danger p-1 px-2"><i class="ti ti-trash"></i></a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+
 </div>
 
 {% endblock dashcontent %}

@@ -21,7 +21,7 @@ def bulk_posting(request):
         website = Website_List.objects.filter(user=curent_user)
         youtubeapi = Youtube_api.objects.filter(user=curent_user)
         keyword_pending = info_bulk_model.objects.filter(user=curent_user, status='Pending')
-        running_keyword = info_bulk_model.objects.filter(user=curent_user, status='Running').first()
+        running_keyword = info_bulk_model.objects.filter(user=curent_user, status='Running')
         keyword_completed = info_bulk_model.objects.filter(user=curent_user, status='Completed')
         keyword_faild = info_bulk_model.objects.filter(user=curent_user, status='Failed')
         context = {'keyword_pending': keyword_pending, 'youtubeapi':youtubeapi, 
@@ -76,39 +76,50 @@ def bulk_posting(request):
 
 @login_required(login_url='login/')
 def completed_info_bulk_post(request):
-    BulkKeyword = info_bulk_model.objects.filter(status='Completed').order_by('name')
-    context = {'BulkKeyword':BulkKeyword}
+    completed_info_bulk_post= info_bulk_model.objects.filter(user=request.user, status='Completed').order_by('keyword_name')
+    context = {'BulkKeyword':completed_info_bulk_post}
     template = 'infoapp/bulk/completed_posts.html'
     return render(request, template, context=context)
 
 @login_required(login_url='login/')
 def completed_info_bulk_single_view(request, post_id):
     templeate = 'infoapp/bulk/completed_single_view.html'
-    bulk_post = info_bulk_model.objects.get(pk=post_id)
-    context = {'bulk_post':bulk_post}
+    completed_info_bulk_post = info_bulk_model.objects.filter(user=request.user, pk=post_id)
+    context = {'bulk_post':completed_info_bulk_post}
     return render(request, templeate, context=context)
 
 @login_required(login_url='login/') 
 def delete_completed_info_bulk_post(request, post_id):
         api = info_bulk_model.objects.get(pk=post_id)
         api.delete()
-        return redirect('/completed-bulk-posts')
+        return redirect('/infowriter/completed-bulk-posts')
 
 @login_required(login_url='login/')    
 def failed_info_bulk_post(request):
-        BulkKeyword = info_bulk_model.objects.filter(status='Failed').order_by('name')
+        BulkKeyword = info_bulk_model.objects.filter(user=request.user, status='Failed').order_by('keyword_name')
         context = {'BulkKeyword':BulkKeyword}
         template = 'infoapp/bulk/failed_posts.html'
         return render(request, template, context=context)
 
+@login_required(login_url='login/')
+def failed_info_bulk_single_view(request, post_id):
+    templeate = 'infoapp/bulk/completed_single_view.html'
+    failed_info_bulk_post = info_bulk_model.objects.filter(user=request.user, pk=post_id)
+    context = {'bulk_post':failed_info_bulk_post}
+    return render(request, templeate, context=context)
+
 @login_required(login_url='login/') 
 def delete_failed_info_bulk_post(request, post_id):
-        api = info_bulk_model.objects.get(pk=post_id)
+        api = info_bulk_model.objects.filter(user=request.user, pk=post_id)
         print(api)
         api.delete()
-        return redirect('/failed-bulk-posts')
+        return redirect('/infowriter/failed-bulk-posts')
 
-
+@login_required(login_url='login/')    
+def delete_pending_bulk_info_post(request, post_id):
+        api = info_bulk_model.objects.filter(user=request.user, pk=post_id)
+        api.delete()
+        return redirect('/infowriter/bulk-posting')
 
 
 

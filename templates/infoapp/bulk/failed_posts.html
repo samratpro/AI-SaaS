@@ -1,0 +1,37 @@
+{% extends 'dashboard/dashboard.html' %}
+{% load static %}
+{% block dashcontent %}
+
+        
+<div class="container">
+    <div class="bg-danger rounded mb-5 mt-3">
+        <h1 class="h4 py-3 mt-1 mb-0 ms-3 text-white bg-danger"> Failed Info Bulk Posts</h1>
+    </div>
+        <table class="table table-striped table-bordered" style="border-color: #DEE2E7;">
+            <thead>
+                <tr>
+                    <th class="count-column"  style="width: 40px;">Count</th>
+                    <th>Keyword Name</th>
+                    <th style="width: 100px;">View</th>
+                    <th style="width: 100px;">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for failed in BulkKeyword %}
+                    <tr>
+                        <td class="p-0 px-3" style="width: 40px;">{{ forloop.counter }}</td>
+                        <td class="p-0 px-2">{{ failed.keyword_name }}</td>
+                        <td class="p-0 px-3 py-1" style="width: 100px;"><a href="{% url 'failed_info_bulk_single_view' failed.id %}" class="btn btn-primary p-1 px-2"> <i class="ti ti-eye"></i> </a></td>
+                        <td class="p-0 px-3 py-1" style="width: 100px;"><a href="{% url 'delete_failed_info_bulk_post' failed.id %}" class="btn btn-danger p-1 px-2"><i class="ti ti-trash"></i></a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+
+</div>
+
+{% endblock dashcontent %}
+
+
