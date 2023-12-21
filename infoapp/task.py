@@ -41,18 +41,38 @@ def BulkKeywordsJob(curent_user, url,username, app_pass, youtube_api, cat_name, 
     print('category_name : ', category_name)
 
 
-
     # Wordpress posting code-----------------
     json_url = website_url + 'wp-json/wp/v2'
     token = base64.standard_b64encode((Username + ':' + App_pass).encode('utf-8'))  # we have to encode the usr and pw
     headers = {'Authorization': 'Basic ' + token.decode('utf-8')}
     
-    def image_operation_bing(command):
+    def image_operation_bing(command, bulkmodel):
         print('Image operation ..............')
+        bulkmodel.error = 'Image operation'
+        bulkmodel.save()
+        app_directory = os.path.dirname(os.path.abspath(__file__))
+        new_directory_name = 'bulkimg'
+        new_directory_path = os.path.join(app_directory, new_directory_name)
+        
+        # Check if the directory already exists, and create it if not
         try:
-            os.mkdir('bulkimg')
-        except FileExistsError:
-            pass
+            app_directory = os.path.dirname(os.path.abspath(__file__))
+            new_directory_name = 'bulkimg'
+            new_directory_path = os.path.join(app_directory, new_directory_name)
+            
+            # Create the directory if it doesn't exist
+            if not os.path.exists(new_directory_path):
+                os.makedirs(new_directory_path)
+                print(f"Directory '{new_directory_name}' created successfully at '{new_directory_path}'")
+                bulkmodel.error = 'Image directory CREATED'
+                bulkmodel.save()
+            else:
+                print(f"Directory '{new_directory_name}' already exists at '{new_directory_path}'")
+        except Exception as e:
+            print(f"An error occurred: {str(e)}")
+            bulkmodel.error = str(e)
+            bulkmodel.save()
+
         try:
             downloader.download(command, limit=1, output_dir='bulkimg', filter='.jpg' )
             try:
@@ -75,7 +95,13 @@ def BulkKeywordsJob(curent_user, url,username, app_pass, youtube_api, cat_name, 
             # Crop the image
             cropped_image = im.crop((left, upper, right, lower)) # type: ignore
             cropped_image.save('bulkimg/' +command +'.jpg')
+            bulkmodel.error = 'Image Operation Done...'
+            bulkmodel.save()
+            print("Image Operation Done...")
         except:
+            bulkmodel.error = 'Image Operation Failed...'
+            bulkmodel.save()
+            print("Image Operation Failed...")
             pass
 
     
@@ -83,7 +109,7 @@ def BulkKeywordsJob(curent_user, url,username, app_pass, youtube_api, cat_name, 
         print(' Body Img... ')
         bulkmodel.error = 'Body Img...'
         bulkmodel.save()
-        image_operation_bing(command)
+        image_operation_bing(command, bulkmodel)
         try:
             media = {'file': open('bulkimg/' + command + '.jpg', 'rb')}
             image = requests.post(json_url + '/media', headers=headers, files=media)
@@ -104,7 +130,7 @@ def BulkKeywordsJob(curent_user, url,username, app_pass, youtube_api, cat_name, 
         print('Feature Img...')
         bulkmodel.error = 'Feature Img...'
         bulkmodel.save()
-        image_operation_bing(command)
+        image_operation_bing(command, bulkmodel)
         try:
             media = {'file': open('bulkimg/' + command + '.jpg', 'rb')}
             image = requests.post(json_url + '/media', headers=headers, files=media)
@@ -117,9 +143,15 @@ def BulkKeywordsJob(curent_user, url,username, app_pass, youtube_api, cat_name, 
             image3 = '<!-- /wp:image -->'
             image_wp = image1 + image2 + image3
             f_img = [post_id, image_wp]
+            print('Feature Img Done..')
+            bulkmodel.error = 'Feature Img Done..'
+            bulkmodel.save()
             return f_img
         except:
             f_img = [0, '']
+            print('Feature Img Failed..')
+            bulkmodel.error = 'Feature Img Failed..'
+            bulkmodel.save()
             return f_img 
         
 
@@ -152,10 +184,12 @@ def BulkKeywordsJob(curent_user, url,username, app_pass, youtube_api, cat_name, 
     
     def text_render(previous_prompt, prompt, bulkmodel):
         while True:
-            api= ApiList.objects.filter(filled_quota__lt=F('website_quota_limit')).first()
+            api= ApiList.objects.filter(filled_quota__lt=F('request_quota_limit')).first()
             print('bulk info , type(api) : ', type(api))
             print('bulk info , api : ', api)
             print('bulk info ,api.filled_quota : ', api.filled_quota)
+            api.error_status = f'API filled quota : {str(api.filled_quota)} ,  request_quota_limit : {str(api.request_quota_limit)}' 
+            api.save()
             if api != None:
                 api.filled_quota += 1
                 break
@@ -210,6 +244,9 @@ def BulkKeywordsJob(curent_user, url,username, app_pass, youtube_api, cat_name, 
         bulkmodel.error = 'Outline Formating done...'
         bulkmodel.save() 
         print('Outline Formating done...')
+        print('\n\n\n\n')
+        print(outlines)
+        print('\n\n\n\n')
         return outlines
     
     def faq(keyword, bulkmodel):
@@ -254,17 +291,20 @@ def BulkKeywordsJob(curent_user, url,username, app_pass, youtube_api, cat_name, 
                 clean_heading = heading.replace('H3', '').replace('h3', '').replace(':', '').replace('-', '').replace('/','').replace('<', '').replace('>', '').strip()
                 print(f'Para Section H2 : {heading} .................')
                 body_img_src = body_img(clean_heading.strip() + ' '+keyword.strip(), bulkmodel) 
-                para_prompt = choice(bulk_Command.paragraph_prompt.split('<<prompt separator>>')).replace('<<keyword>>', keyword).replace('<<heading>>', clean_heading)
-                section = text_render(prompt_remember, para_prompt, bulkmodel)
-                prompt_remember = section
+                para_prompt = choice(bulk_Command.paragraph_prompt.split('<<prompt separator>>')).replace('<<keyword>>', keyword).replace('<<heading>>', clean_heading).replace('<<prompt remember>>',prompt_remember)
+                section = text_format(text_render('', para_prompt, bulkmodel))
                 content_body_data += heading + body_img_src + section
+                prompt_remember = section
             else:
                 print(F'Para Section H3 : {heading}.................')
                 clean_heading = heading.replace('H4', '').replace('h4', '').replace(':', '').replace('-', '').replace('/','').replace('<', '').replace('>', '').replace('H4','').replace('h4','').strip()
-                para_prompt = choice(bulk_Command.paragraph_prompt.split('<<prompt separator>>')).replace('<<keyword>>', keyword).replace('<<heading>>', clean_heading)
-                section = text_render(prompt_remember, para_prompt, bulkmodel)
-                prompt_remember = section
+                para_prompt = choice(bulk_Command.paragraph_prompt.split('<<prompt separator>>')).replace('<<keyword>>', keyword).replace('<<heading>>', clean_heading).replace('<<prompt remember>>',prompt_remember)
+                section = text_format(text_render('', para_prompt, bulkmodel))
                 content_body_data += heading + section
+                prompt_remember = section
+            print('\n\n\n\n')
+            print(content_body_data)
+            print('\n\n\n\n')
         print('Content body done .................')
         bulkmodel.error = 'Content Body Done...'
         bulkmodel.save()  
@@ -311,6 +351,8 @@ def BulkKeywordsJob(curent_user, url,username, app_pass, youtube_api, cat_name, 
       
     
     for keyword_model in pending_keywords:
+        keyword_model.status = 'Running'
+        keyword_model.save()
         keyword = keyword_model.keyword_name
         print('Keyword is : ', keyword)
         print('bulk_Command.introduction : ', bulk_Command.introduction)

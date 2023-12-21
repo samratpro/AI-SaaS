@@ -1,5 +1,6 @@
 from django.db import models
 from userapp.models import *
+from ckeditor_uploader.fields import RichTextUploadingField
 # Create your models here.
 
 
@@ -25,17 +26,23 @@ Write an h2 heading on this keyword within 55 characters before starting the mai
 keyword: <<keyword>>
 '''
 Paragraph_prompt = '''
-Make sure that you dont follow Ai pattern but article should be really simple and it should make sense. it should be as written with an intermediate level writer, make sure to add a bit of humor and add some funny lines. also on keypoints, you can add <em></em>, if necessary: Write article paragraph section from this heading, interesting, and organized way like human writing but not unnecessary words not long length!
+Write a article paragraph section from this heading, interesting, and organized way like human writing but not unnecessary words not long length. Each output sentence will be short, meaningful and easy to read, that can understand elementary school student.
+
+Make sure that you don't follow Ai pattern but paragraph should be really simple, and it should make sense. it should be as written with an intermediate level writer, make sure to add a bit of humor and add some funny lines. also on key points, you can add <em></em>, if necessary: Write article paragraph section from this heading, interesting, and organized way like human writing but not unnecessary words not long length!
 the article title of this paragraph is : <<keyword>>,
 paragraph heading is : <<heading>>
+previous output remember:  <<prompt remember>>
 Each output sentence will be short, meaningful and easy to read, that can understand elementary school student.
 you can add bullet points or table in the section, if its suitable, the bullet points and tables must with <ul><li> tags or <table></table> tag and paragraph is with <p></p> tags 
 
 <<prompt separator>>
 
-Make sure that you dont follow Ai pattern but article should be really simple and it should make sense. it should be as written with an intermediate level writer, make sure to add a bit of humor and add some funny lines. also on keypoints, you can add <em></em>,  if necessary: Write article paragraph section from this heading, interesting, and organized way like human writing but not unnecessary words not long length!
+Write a article paragraph section from this heading, interesting, and organized way like human writing but not unnecessary words not long length. Each output sentence will be short, meaningful and easy to read, that can understand elementary school student.
+
+Make sure that you don't follow Ai pattern but paragraph should be really simple and it should make sense. it should be as written with an intermediate level writer, make sure to add a bit of humor and add some funny lines. also on key points, you can add <em></em>,  if necessary: Write article paragraph section from this heading, interesting, and organized way like human writing but not unnecessary words not long length!
 the article title of this paragraph is : <<keyword>>,
 paragraph heading is : <<heading>>
+previous output remember:  <<prompt remember>>
 please add a html table in the section, if its suitable, tables must with html <table></table> tag and paragraph is with <p></p> tags.
 '''
 
@@ -73,6 +80,7 @@ class info_bulk_model(models.Model):
     user = models.ForeignKey(AppUser, on_delete=models.CASCADE, null=True, blank=True)
     keyword_name = models.CharField(max_length=100)
     status = models.CharField(max_length=20, default='Pending')
+    content = RichTextUploadingField(blank=True, null=True)
     error = models.TextField(blank=True, null=True)
 
     def __str__(self):
@@ -80,16 +88,16 @@ class info_bulk_model(models.Model):
     
 
 class Info_bulk_Command(models.Model):
-    title = models.TextField(null=True, blank=True, default=title)
-    outline_prompt = models.TextField(null=True, blank=True, default=Outline_prompt)
-    introduction = models.TextField(null=True, blank=True, default=Introduction)
-    h2_title = models.TextField(null=True, blank=True, default=H2_title)
-    paragraph_prompt = models.TextField(null=True, blank=True, default=Paragraph_prompt)
-    faq_question = models.TextField(null=True, blank=True, default=Faq_question)
-    faq_ans = models.TextField(null=True, blank=True, default=Faq_ans)
-    summary = models.TextField(null=True, blank=True, default=Summary)
-    conclusion_para = models.TextField(null=True, blank=True, default=Conclusion_para)
-    excerpt = models.TextField(null=True, blank=True, default=Excerpt)
+    title = models.TextField(default=title)
+    outline_prompt = models.TextField(default=Outline_prompt)
+    introduction = models.TextField(default=Introduction)
+    h2_title = models.TextField(default=H2_title)
+    paragraph_prompt = models.TextField(default=Paragraph_prompt)
+    faq_question = models.TextField(default=Faq_question)
+    faq_ans = models.TextField(default=Faq_ans)
+    summary = models.TextField(default=Summary)
+    conclusion_para = models.TextField(default=Conclusion_para)
+    excerpt = models.TextField(default=Excerpt)
     
 
     def __str__(self):
@@ -98,9 +106,9 @@ class Info_bulk_Command(models.Model):
     
 
 class Info_Manual_Command(models.Model):
-    generate_title = models.TextField(null=True, blank=True)
-    generate_outline = models.TextField(null=True, blank=True)
-    generate_paragraph = models.TextField(null=True, blank=True)
+    generate_title = models.TextField(default=title)
+    generate_outline = models.TextField(default=Outline_prompt)
+    generate_paragraph = models.TextField(default=Paragraph_prompt)
 
     def __str__(self):
         return 'Info tools manual posting commands'

@@ -11,9 +11,9 @@ from infoapp.models import *
 
 
 
-def text_render(previous_prompt, prompt):
+def title_render(previous_prompt, raw_prompt):
         while True:
-            api= ApiList.objects.filter(filled_quota__lt=F('website_quota_limit')).first()
+            api= ApiList.objects.filter(filled_quota__lt=F('request_quota_limit')).first()
             print('bulk info , type(api) : ', type(api))
             print('bulk info , api : ', api)
             print('bulk info ,api.filled_quota : ', api.filled_quota)
@@ -23,6 +23,7 @@ def text_render(previous_prompt, prompt):
         try:
             client = OpenAI(api_key=api.api_key)
             print('prompts ', prompt)
+            prompt = Info_Manual_Command.generate_title.replace('<<keyword>>', raw_prompt)
             response = client.chat.completions.create(
                 messages=[
                     {"role": "system", "content": previous_prompt},
@@ -48,7 +49,7 @@ def formated_outline(keyword):
         print(" bulk_Command.outline_prompt :  ", bulk_Command.outline_prompt)
         i = 1
         while True:
-            outline = text_render('', bulk_Command.outline_prompt.replace('<<keyword>>', keyword))
+            outline = text_render('', Info_Manual_Command.generate_outline.replace('<<keyword>>', keyword))
             print(f' Outline Loop {i} : ', outline) 
             i += 1
             if 'h2' in outline or 'H2' in outline or outline == 'openaierror':   # openaierror is for breaking unlimited loop if API error
@@ -77,7 +78,7 @@ class GenerateInfoTitleTextView(APIView):
             serializer = Generate_Info_Title_Serializer(data=request.data)
             if serializer.is_valid():
                 input_text = serializer.validated_data['input_text']
-                generated_text = text_render('', input_text).replace('"','')
+                generated_text = title_render('', input_text).replace('"','')
                 return Response({'generated_text': generated_text}, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

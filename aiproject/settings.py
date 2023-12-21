@@ -26,6 +26,10 @@ SECRET_KEY = 'django-insecure-!ys=66@=-&t0ehc%o+!4ykx81cnu-)^xyiwim=rj-p9xa6kmj-
 DEBUG = True
 
 ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['*','app.oneclickarticle.com']
+# CSRF_TRUSTED_ORIGINS = [
+#     'https://app.oneclickarticle.com'
+# ]
 
 
 # Application definition
@@ -87,6 +91,19 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+
+# DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql',
+#        'NAME':  'aiapp',
+#        'USER': 'aiapp',
+#        'PASSWORD': 'hmRBBs8YjHYZXEXh',
+#        'HOST': 'localhost',
+#        'PORT': '5432',
+#    }
+# }
+
 
 
 # Password validation
@@ -186,9 +203,3 @@ CKEDITOR_CONFIGS = {
             ]),
         },
 }
-
-
-
-
-
-

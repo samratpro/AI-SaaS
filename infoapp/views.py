@@ -6,6 +6,9 @@ from infoapp.models import *
 import threading
 from .task import *
 
+import logging
+logger = logging.getLogger(__name__)
+
 # Create your views here.
 
 
@@ -18,11 +21,13 @@ def bulk_posting(request):
         website = Website_List.objects.filter(user=curent_user)
         youtubeapi = Youtube_api.objects.filter(user=curent_user)
         keyword_pending = info_bulk_model.objects.filter(user=curent_user, status='Pending')
+        running_keyword = info_bulk_model.objects.filter(user=curent_user, status='Running').first()
         keyword_completed = info_bulk_model.objects.filter(user=curent_user, status='Completed')
         keyword_faild = info_bulk_model.objects.filter(user=curent_user, status='Failed')
         context = {'keyword_pending': keyword_pending, 'youtubeapi':youtubeapi, 
                    'website':website, 'keyword_completed':keyword_completed,
-                   'keyword_faild':keyword_faild
+                   'keyword_faild':keyword_faild,
+                   'running_keyword':running_keyword
                    }
         
         if request.method == 'POST':
@@ -65,7 +70,43 @@ def bulk_posting(request):
             except:
                 return redirect('info_bulk_posting')
         else:
+            logger.info('This is bulk info posting page, testing for Python logger')
             return render(request, template, context=context)
+
+
+@login_required(login_url='login/')
+def completed_info_bulk_post(request):
+    BulkKeyword = info_bulk_model.objects.filter(status='Completed').order_by('name')
+    context = {'BulkKeyword':BulkKeyword}
+    template = 'infoapp/complete_bulk_post.html'
+    return render(request, template, context=context)
+
+@login_required(login_url='login/')
+def completed_info_bulk_post_view(request, post_id):
+    templeate = 'infoapp/bulk_post_view.html'
+    bulk_post = info_bulk_model.objects.get(pk=post_id)
+    context = {'bulk_post':bulk_post}
+    return render(request, templeate, context=context)
+
+@login_required(login_url='login/') 
+def delete_completed_info_bulk_post(request, post_id):
+        api = info_bulk_model.objects.get(pk=post_id)
+        api.delete()
+        return redirect('/completed-info-bulk-post')
+
+@login_required(login_url='login/')    
+def failed_info_bulk_post(request):
+        BulkKeyword = info_bulk_model.objects.filter(status='Failed').order_by('name')
+        context = {'BulkKeyword':BulkKeyword}
+        template = 'infoapp/failed_bulk_post.html'
+        return render(request, template, context=context)
+
+@login_required(login_url='login/') 
+def delete_failed_info_bulk_post(request, post_id):
+        api = info_bulk_model.objects.get(pk=post_id)
+        print(api)
+        api.delete()
+        return redirect('/failed-info-bulk-post')
 
 
 
@@ -75,7 +116,7 @@ def bulk_posting(request):
 def single_posting(request):
         website = Website_List.objects.filter(user=request.user)
         openai_key = ApiList.objects.all()
-        less_quota_data = ApiList.objects.filter(filled_quota__lt=F('website_quota_limit'))
+        less_quota_data = ApiList.objects.filter(filled_quota__lt=F('request_quota_limit'))
         youtubeapi = Youtube_api.objects.filter(user=request.user)
         prompts = Info_Manual_Command.objects.first()
         context = {'website':website, 'youtubeapi':youtubeapi, 'prompts':prompts}
