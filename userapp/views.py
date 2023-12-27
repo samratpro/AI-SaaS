@@ -7,6 +7,7 @@ from .models import AppUser
 from django.core.mail import send_mail
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.crypto import get_random_string
+from .models import CreditPackage
 # Create your views here.
 
 
@@ -167,9 +168,40 @@ def logout(request):
 
 @login_required(login_url='login/')
 def profile(request):
-    # Assuming the user is authenticated
-    user_profile = request.user
+    user_profile = AppUser.objects.get(email=request.user.email)
+    if request.method == 'POST':
+        profile_image = request.FILES.get('img_upload')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        user_profile.first_name = first_name
+        user_profile.last_name = last_name
+        user_profile.email = email
+
+        # Update the password if a new password is provided
+        if password:
+            user_profile.set_password(password)
+        if profile_image:
+            user_profile.profile_image = profile_image
+
+        user_profile.save()
+        return redirect('profile')
     return render(request, 'user/profile/profile.html', {'user_profile': user_profile})
 
 
 
+
+@login_required(login_url='login/')
+def purchase_credits(request):
+    if request.method == 'GET':
+        credit_packages = CreditPackage.objects.all()
+        return render(request, 'user/credit/purchase_credits.html', {'credit_packages': credit_packages})
+
+    elif request.method == 'POST':
+        package_id = request.POST.get('package_id')
+        credit_package = CreditPackage.objects.get(pk=package_id)
+        request.user.purchase_credit(credit_package)
+
+        return redirect('profile')

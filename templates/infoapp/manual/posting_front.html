@@ -9,178 +9,61 @@
         <p class="ms-3 pb-3">Publish a High Quality Article within a few steps... 👉 </p>
     </div>
 
-    <form action="" method="post">
-        {% csrf_token %}
-        <div class="row g-2">
-            <div class="col-md-10">
-                <div class="row g-2">
-                    <label for="" class="form-label fs-4 fw-normal">Keyword</label>
-                    <div class="col-8">
-                        <div class="mb-3">
-                            <input type="text" required name="keyword" class="form-control" id="keywordInput">
-                          </div> 
-                    </div>
-                    <div class="col-4">
-                        <button class="btn btn-primary" id="generateTitleButton">Generate Title</button>
-                    </div>
-                </div>
-        
-                <div class="row g-2">
-                    <label for="" class="form-label fs-4 fw-normal">Title</label>
-                    <div class="col-8">
-                        <div class="mb-3">
-                            <input type="text" required class="form-control" name="titleinput" id="titleInput">
-                          </div> 
-                    </div>
-                    <div class="col-4">
-                        <button class="btn btn-primary" id="generateoutlineButton">Generate Outline</button>
-                    </div>
-                </div>
-
-                <div class="row g-2">
-                    <div class="col-10">
-                        <label for="" class="form-label fs-4 fw-normal">Outline</label>
-                        <div class="form-floating">
-                            <textarea name="outline" required class="form-control" id="outlineinput" style="height: 200px"></textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- <div class="col-md-3">
-                <label class="form-label h5 mb-3">Options</label>
-                <select name="website_id" class="form-select" aria-label="Default select example">
-                    <option value="0" selected>Select Website</option>
-                    {% for single_website in website  %}
-                    <option value="{{single_website.id}}">{{single_website.website_name}}</option>
-                    {% endfor %}
-                </select>
-
-        
-                <select name="openaiapi_id" class="form-select mt-3" aria-label="Default select example">
-                    <option selected value="enable">Image Enable</option>
-                    <option value="disable">Image Disable</option>
-                </select>
-        
-                <select name="youtubeapi_id" class="form-select mt-3" aria-label="Default select example">
-                    <option value="0" selected>Select Youtube API</option>
-                    {% for single_youtubeapi in youtubeapi  %}
-                    <option value="{{single_youtubeapi.id}}">{{single_youtubeapi.name}}</option>
-                    {% endfor %}
-                </select>
-        
-                <div class="input-group mt-3">
-                    <input name="category" type="text" class="form-control" placeholder="Category Name" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                </div>
-        
-                <select name="status" class="form-select mt-3" aria-label="Default select example">
-                    <option value="0" selected>Post Status</option>
-                    <option value="publish">Publish</option>
-                    <option value="draft">Draft</option>
-                </select>
-            </div> -->
-        </div>
 
 
-        <button type="submit" class="btn brand-bg mt-4">>> Next Steps</button>
-    
-    </form>
-</div>
+    <div id="myRichTextField" class="rich-text-field" contenteditable="true" style="border: 1px solid #ccc;padding: 8px;min-height: 200px;">
 
-<div class="container mt-5">
-    <ul class="list-group">
-        {% for keyword in keyword_pending  %}
-        <li class="list-group-item">
-            {{keyword.name}} <span style="border-bottom:2px solid red;">Status</span> : {{keyword.status}}    
-            <span class="border rounded ms-2 p-1 bg-warning">{{keyword.error}}</span> 
-            <a class="btn btn-danger ms-3 m-1" href="{% url 'delete_pending_single_post' keyword.id %}">Cancel</a>  
-        </li>
-        {% endfor %}
-    </ul>
-</div>
-
-<div style="display: none;">
- <p id="generateTitlecommand">{{prompts.generate_title}}</p>
- <p id="generateoutlinecommand">{{prompts.generate_outline}}</p>
-</div>
+    </div>
 
 
-<script>
-    // For title
-    document.getElementById('generateTitleButton').addEventListener('click', async function(event) {
-        event.preventDefault();
-        keyword = document.getElementById('keywordInput').value;
-        const input_text = document.getElementById('generateTitlecommand').textContent + keyword
 
-        if(keyword.length > 0){
-            document.getElementById('generateTitleButton').style.backgroundColor = '#44A6A3';
-            document.getElementById('generateTitleButton').style.borderColor = '#44A6A3';
-            document.getElementById('generateTitleButton').textContent = '......';
+    <button id="replaceTextButton">Replace Selected Text</button>
 
-            const response = await fetch('/api/generate-info-single-title/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken')
-                },
-                body: JSON.stringify({ input_text : input_text })
-            });
-        
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-        
-            const data = await response.json();
-            document.getElementById('titleInput').value = data.generated_text;
-            document.getElementById('generateTitleButton').style.backgroundColor = '#47BAB7';
-            document.getElementById('generateTitleButton').style.borderColor = '#47BAB7';
-            document.getElementById('generateTitleButton').textContent = 'Generate Title';
-
-       }
-    })
-    
-
-    // For outline
-    document.getElementById('generateoutlineButton').addEventListener('click', async function(event) {
-        event.preventDefault();
-        const title = document.getElementById('titleInput').value;
-        const input_text = document.getElementById('generateoutlinecommand').textContent + title
-    
-        if(title.length > 0){
-            document.getElementById('generateoutlineButton').style.backgroundColor = '#44A6A3';
-            document.getElementById('generateoutlineButton').style.borderColor = '#44A6A3';
-            document.getElementById('generateoutlineButton').textContent = '.....';
-
-            const response = await fetch('/api/generate-info-single-outline/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken')
-                },
-                body: JSON.stringify({ input_text: input_text })
-            });
-        
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-        
-            const data = await response.json();
-            document.getElementById('outlineinput').value = data.generated_text;
-            document.getElementById('generateoutlineButton').style.backgroundColor = '#47BAB7';
-            document.getElementById('generateoutlineButton').style.borderColor = '#47BAB7';
-            document.getElementById('generateoutlineButton').textContent = 'Generate Outline';
+    <script>
+        // Function to get the current selection range
+        function getSelectionRange() {
+          var selection = window.getSelection();
+          if (selection.rangeCount > 0) {
+            return selection.getRangeAt(0);
+          }
+          return null;
         }
-    });
-
-
-    
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    }
-
-</script>
+      
+        // Function to set the selection range
+        function setSelectionRange(range) {
+          var selection = window.getSelection();
+          selection.removeAllRanges();
+          selection.addRange(range);
+        }
+      
+        // Function to replace the selected text with the content of the rich text field
+        function replaceSelectedText() {
+          var range = getSelectionRange();
+          if (range) {
+            var content = document.getElementById('myRichTextField').innerText;
+      
+            range.deleteContents();
+            range.insertNode(document.createTextNode(content));
+          }
+        }
+      
+        // Get the rich text field element
+        var richTextField = document.getElementById('myRichTextField');
+      
+        // Get the replace text button element
+        var replaceTextButton = document.getElementById('replaceTextButton');
+      
+        // Example: Set initial content
+        richTextField.innerHTML = '<h1>This is some initial content.</h1>';
+      
+        // Example: Replace selected text on button click
+        replaceTextButton.addEventListener('click', function () {
+          // Replace the selected text with the content of the rich text field
+          replaceSelectedText();
+          // Set the selection range to the end of the replaced text
+          setSelectionRange(getSelectionRange());
+        });
+      </script>
 
 {% endblock dashcontent %}
 

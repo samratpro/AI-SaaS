@@ -401,7 +401,7 @@ def BulkKeywordsJob(curent_user, url,username, app_pass, youtube_api, cat_name, 
             print('Completed .......... : keyword : ', keyword)
             keyword_model.error = 'No error'
             keyword_model.status = 'Completed'
-            # keyword_model.content = post_body
+            keyword_model.content = post_body
             keyword_model.save()
             print('completed, kw:', keyword)
         else:
@@ -409,6 +409,7 @@ def BulkKeywordsJob(curent_user, url,username, app_pass, youtube_api, cat_name, 
             print('Failed .......... : keyword : ', keyword)
             keyword_model.error = str(f'Wordpress Error and, error Status Code is : {r.status_code}')
             keyword_model.status = 'Failed'
+            keyword_model.content = post_body
             keyword_model.save()
             print('Faild, kw:', keyword)
         sleep(10)        

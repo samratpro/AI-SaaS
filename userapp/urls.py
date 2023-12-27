@@ -19,6 +19,8 @@ urlpatterns = [
 
     path('forget_password/confirm/<str:forget_code>/', views.forget_password_confirm, name='forget_password_confirm'),
     path('forget_password/', views.forget_password, name='forget_password'),
+
+    path('purchase-credits/', views.purchase_credits, name='purchase_credits'),
 ]
 
 if settings.DEBUG:
