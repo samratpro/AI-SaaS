@@ -174,15 +174,16 @@ def profile(request):
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         email = request.POST.get('email')
-        password = request.POST.get('password')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
 
         user_profile.first_name = first_name
         user_profile.last_name = last_name
         user_profile.email = email
 
         # Update the password if a new password is provided
-        if password:
-            user_profile.set_password(password)
+        if password1 and password1 == password2:
+            user_profile.set_password(password1)
         if profile_image:
             user_profile.profile_image = profile_image
 

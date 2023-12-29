@@ -146,3 +146,40 @@ body{
 }
 
 
+
+
+/* Select Package */
+/* Add this CSS to style the custom radio buttons */
+.radio-custom {
+    opacity: 0; /* Hide default radio button */
+    position: absolute;
+  }
+  
+  /* Style the label to resemble a custom radio button */
+  .radio-label {
+    display: inline-block;
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+  
+  /* Create the visual appearance of the radio button */
+  .radio-label:before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid #47BAB7; /* Change border color */
+    background-color: transparent;
+  }
+  
+  /* Style the radio button when checked */
+  .radio-custom:checked + .radio-label:before {
+    background-color: #47BAB7; /* Change background color */
+  }
+  
